@@ -3,6 +3,7 @@
 | # | Date | Decision | Status |
 | --- | --- | --- | --- |
 | 1 | 2026-10-13 | [Use NOAA GSOD/GHCN instead of PAGASA station data](#1-use-noaa-gsodghcn-instead-of-pagasa-station-data) | Accepted |
+| 2 | 2026-10-14 | [Round ONI to one decimal before labeling](#2-round-oni-to-one-decimal-before-labeling) | Accepted |S
 
 ---
 
@@ -18,4 +19,25 @@
 - Pay the PAGASA fee: rejected; goal is to keep the project free
 - Skip station data entirely: viable, since CHIRPS covers v1 needs, but a free cross-check adds credibility
 - PAGASA student route: not eligible
+
 **Impact:** No change to v1 scope. GSOD/GHCN records may have gaps, so only months with complete daily data will be used. Daily values must be aggregated to monthly.
+
+---
+
+## 2. Round ONI to one decimal before labeling
+
+**Date:** 2026-10-14
+**Status:** Accepted
+
+**Context:** The NOAA ONI data file gives values to two decimals, but NOAA's
+official ONI table rounds them to one decimal and labels El Niño / La Niña
+from the rounded values. Labeling from the raw values split some periods
+that NOAA treats as continuous (e.g., Feb–Apr 1953: 0.50, 0.48, 0.56).
+
+**Decision:** Round ONI to one decimal before assigning phase labels.
+
+**Alternatives considered:**
+- Use raw two-decimal values: rejected; events wouldn't match NOAA's record
+
+**Impact:** Phase labels and run numbers change slightly. Event list should
+now match NOAA's official El Niño and La Niña episodes.
