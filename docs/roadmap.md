@@ -17,17 +17,17 @@ A step-by-step checklist for the project, based on [the proposal](proposal.md). 
 ### Events
 - [x] Summarize runs into a `runs` table (start, end, months, label)
 - [x] Filter to real events: El Niño or La Niña lasting 5+ months
-- [x] Check: 1997–98, 2015–16, and 2023–24 El Niños all appear in `events` 💾
+  - Check: 1997–98, 2015–16, and 2023–24 El Niños all appear in `events` 💾
 - [x] Add **peak ONI** to each run. For El Niño the peak is the highest value; for La Niña, the lowest.
   - *Done when:* 1997–98 and 2015–16 both peak around +2.4 to +2.6
   - *Search:* pandas named aggregation with max and min; selecting a value based on another column
 - [X] Add a **strength** column: weak (0.5–0.9), moderate (1.0–1.4), strong (1.5–1.9), very strong (≥2.0), using the absolute peak
   - *Search:* `np.select`; `abs()`
-- [ ] Find the **2026 event**. It's still ongoing, so its end date is just the latest month in the data. Note that in your write-up.
+- [x] Find the **2026 event**. It's still ongoing, so its end date is just the latest month in the data. Note that in your write-up.
   - *Done when:* you can say how long it has lasted so far and its peak so far 💾
 
 ### Chart
-- [ ] Plot ONI over time, 1950 to now
+- [ ] Plot RONI and ONI over time, 1950 to now, on the same chart
 - [ ] Add horizontal lines at +0.5 and −0.5
 - [ ] Shade El Niño events (and optionally La Niña) using the `events` table
 - [ ] Highlight 1997–98, 2015–16, 2023–24, and 2026
@@ -37,8 +37,8 @@ A step-by-step checklist for the project, based on [the proposal](proposal.md). 
 
 ### Move code out of the notebook
 - [ ] Create `src/elnino_visayas_forecast/oni.py` with:
-  - `download_oni()`: saves the raw file to `data/raw/oni.txt`
-  - `parse_oni(text)`: returns the tidy DataFrame (dates, rounded ONI, labels)
+  - `download_index(url, path)`: saves a raw index file to `data/raw/`
+  - `parse_index(text)`: returns the tidy DataFrame (dates, rounded values, labels) for ONI or RONI
   - `find_events(df)`: returns the events table
 - [ ] Write tests in `tests/test_oni.py` using a few pasted lines of the real file
   - *Done when:* `uv run pytest` passes, and tests cover the season-to-month mapping, rounding, and one known event
@@ -46,6 +46,15 @@ A step-by-step checklist for the project, based on [the proposal](proposal.md). 
 - [ ] Save the ONI table to DuckDB
   - *Search:* duckdb python insert pandas DataFrame
 - [ ] Run Ruff: `uv run ruff check` and `uv run ruff format` 💾
+
+### Compare ONI and RONI
+- [ ] Download RONI from `https://www.cpc.ncep.noaa.gov/data/indices/RONI.ascii.txt` and check that its format matches the ONI file
+- [ ] Run the same functions on RONI: labels, runs, events, peak, and strength
+- [ ] Compare the two event lists: which events appear in only one index?
+  - *Done when:* your results agree with NOAA's summary (under RONI, 1958–59, 2014–15, and 2019–20 El Niños are lost and 1992–93 is gained)
+- [ ] Compare peaks and strengths for 1997–98, 2015–16, 2023–24, and 2026
+- [ ] Compare the 2026 event: start month, peak so far, and strength in each index
+- [ ] Write 3–5 sentences of observations 💾
 
 ### Write-up
 - [ ] Add 3–5 sentences to the README: how does 2026 compare to past events so far?
@@ -73,11 +82,11 @@ A step-by-step checklist for the project, based on [the proposal](proposal.md). 
 - [ ] Compute **normal rainfall** for each province and calendar month, using 1991–2020
 - [ ] Compute **anomaly** = rainfall − normal (also as % of normal)
   - *Search:* pandas groupby transform; groupby by month
-- [ ] Join rainfall anomalies with ONI on date 💾
+- [ ] Join rainfall anomalies with RONI on date 💾
 
 ### Explore
 - [ ] Compare dry-season (Feb–May) anomalies in El Niño years vs. neutral years
-- [ ] Chart: rainfall deficit vs. peak ONI strength, one point per past event
+- [ ] Chart: rainfall deficit vs. peak RONI strength, one point per past event
 - [ ] Chart: rainfall anomalies during 1997–98, 2015–16, and 2023–24
 - [ ] Look at timing: how many months after ONI rises does rainfall drop?
   - *Search:* lagged correlation; pandas `shift`
@@ -88,7 +97,7 @@ A step-by-step checklist for the project, based on [the proposal](proposal.md). 
 
 ## Part 3: Can we forecast it? (target: Nov 22)
 
-- [ ] Build features: ONI lagged 0–6 months, plus calendar month
+- [ ] Build features: RONI lagged 0–6 months, plus calendar month
 - [ ] Baseline: predict zero anomaly (a normal month)
 - [ ] Model A: linear regression
   - *Search:* scikit-learn `LinearRegression`; one-hot encoding
@@ -100,13 +109,14 @@ A step-by-step checklist for the project, based on [the proposal](proposal.md). 
   - *Search:* quantile regression; prediction intervals from residuals
 - [ ] Compare results against the frozen success criteria 💾
 - [ ] Optional, only if on schedule by Nov 16: gradient boosting
+- [ ] Optional: compare ONI and RONI as predictors
 
 ---
 
 ## Part 4: The 2027 forecast (target: Nov 30)
 
-- [ ] Get the latest official ENSO outlook for the coming months
-  - *Search:* IRI ENSO forecast; NOAA CPC ENSO outlook
+- [ ] Get the latest official RONI outlook for the coming months
+  - *Search:* IRI ENSO forecast; NOAA CPC RONI outlook
 - [ ] Forecast Feb–May 2027 rainfall anomalies per province, with intervals
 - [ ] Make a forecast table and chart (or map) by province
 - [ ] Write the full write-up: question, data, method, results, limitations

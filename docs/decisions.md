@@ -3,7 +3,8 @@
 | # | Date | Decision | Status |
 | --- | --- | --- | --- |
 | 1 | 2026-10-13 | [Use NOAA GSOD/GHCN instead of PAGASA station data](#1-use-noaa-gsodghcn-instead-of-pagasa-station-data) | Accepted |
-| 2 | 2026-10-14 | [Round ONI to one decimal before labeling](#2-round-oni-to-one-decimal-before-labeling) | Accepted |S
+| 2 | 2026-10-14 | [Round ONI to one decimal before labeling](#2-round-oni-to-one-decimal-before-labeling) | Accepted |
+| 3 | 2026-11-17 | [Use RONI as the primary ENSO index](#3-use-roni-as-the-primary-enso-index) | Accepted |
 
 ---
 
@@ -41,3 +42,36 @@ that NOAA treats as continuous (e.g., Feb–Apr 1953: 0.50, 0.48, 0.56).
 
 **Impact:** Phase labels and run numbers change slightly. Event list should
 now match NOAA's official El Niño and La Niña episodes.
+
+---
+
+## 3. Use RONI as the primary ENSO index
+
+**Date:** 2026-11-17
+**Status:** Accepted
+
+**Context:** The project started with NOAA's Oceanic Niño Index (ONI). NOAA
+switched to the Relative Oceanic Niño Index (RONI) for official ENSO
+monitoring and prediction on February 1, 2026 (NWS Public Information
+Statement 26-05). RONI subtracts the tropical-mean sea surface temperature
+anomaly from Niño 3.4, removing background ocean warming. NOAA's official
+ENSO outlooks are now issued and verified in RONI. ONI is still updated
+for continuity.
+
+**Decision:** Use RONI as the primary index for the project. In Part 1,
+run the same event analysis on both ONI and RONI and compare the results.
+In Parts 2–4, use RONI only.
+
+**Alternatives considered:**
+- Keep ONI only: rejected; no longer NOAA's official index, and the 2027
+  forecast inputs (NOAA outlooks) are in RONI
+- Use both throughout: rejected; doubles the modeling work. Comparing them
+  as predictors is an optional Part 3 experiment.
+
+**Impact:**
+- New data source: https://www.cpc.ncep.noaa.gov/data/indices/RONI.ascii.txt
+- Event list, peaks, and strengths will differ between indices; documented
+  as a Part 1 finding
+- Notebook logic to be refactored into functions so both indices share
+  the same code
+- Proposal and roadmap updated to reflect RONI

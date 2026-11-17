@@ -1,6 +1,7 @@
 # El Niño Rainfall Impact Forecast: Central Visayas 2027 — Project Proposal
 
 Oct 13, 2026
+> **Revised 2026-11-17:** switched the main index from ONI to RONI. See [decision 3](decisions.md#3-use-roni-as-the-primary-enso-index).
 
 ## Research question
 
@@ -26,9 +27,10 @@ All v1 sources are free and public; coverage dates are approximate until checked
 
 | Dataset | Provider | What it gives | Coverage | Role |
 | --- | --- | --- | --- | --- |
-| Oceanic Niño Index (ONI) | NOAA Climate Prediction Center | Monthly El Niño strength (°C anomaly) | 1950–present | Main predictor |
+| Relative Oceanic Niño Index (RONI) | NOAA Climate Prediction Center | Monthly El Niño strength relative to the tropical mean (°C) | 1950–present | Main predictor |
+| Oceanic Niño Index (ONI) | NOAA Climate Prediction Center | Legacy El Niño index (°C anomaly) | 1950–present | Part 1 comparison only |
 | CHIRPS v2 rainfall | UC Santa Barbara Climate Hazards Center | Monthly gridded rainfall (mm), \~5 km cells | 1981–present | Target variable |
-| ENSO outlooks | PAGASA, NOAA/IRI | Forecast ONI for coming seasons | Current | Inputs for the 2027 forecast |
+| ENSO outlooks | PAGASA, NOAA/IRI | Forecast RONI for coming seasons | Current | Inputs for the 2027 forecast |
 | Province boundaries | PSA / HDX admin boundaries | Shapefiles to average rainfall per province | Current | Aggregation |
 | Station rainfall (optional) | NOAA GSOD / GHCN-Daily | Daily rainfall at Mactan and other stations | Varies | Cross-check CHIRPS |
 
@@ -38,15 +40,15 @@ Open question: which Central Visayas stations have usable GSOD/GHCN coverage sin
 
 Model monthly rainfall anomaly per province from lagged ONI and season, and compare it against a simple baseline.
 
-1. **Ingest.** Scheduled pipeline pulls ONI and CHIRPS monthly, clips rainfall to province boundaries, and stores it in DuckDB.
+1. **Ingest.** Scheduled pipeline pulls RONI (plus ONI for comparison) and CHIRPS monthly, clips rainfall to province boundaries, and stores it in DuckDB.
 2. **Build the target.** Rainfall anomaly = monthly rainfall minus that month's 1991–2020 average, per province (also as % of normal).
 3. **Explore past events.** Compare anomalies in strong El Niño years (1997–98, 2015–16, 2023–24) against neutral years; plot deficit vs. ONI strength.
 4. **Model.**
    - Baseline: climatology (predict zero anomaly, i.e. a normal month).
-   - Model A: linear regression on ONI lagged 0–6 months plus month-of-year.
+   - Model A: linear regression on RONI lagged 0–6 months.
    - Model B (stretch): gradient boosting on the same features.
 5. **Evaluate.** Time-based splits only; hold out whole El Niño events (train without 2015–16, test on it, and so on).
-6. **Forecast.** Feed current ONI and official ENSO outlooks into the chosen model to estimate February–May 2027 anomalies, with prediction intervals.
+6. **Forecast.** Feed current RONI and official ENSO outlooks into the chosen model to estimate February–May 2027 anomalies, with prediction intervals.
 
 ## Success criteria
 
@@ -67,7 +69,7 @@ Version 1 covers rainfall only, for four provinces, with one baseline and one ma
 **In scope (v1)**
 
 - Monthly rainfall anomaly for Cebu, Bohol, Negros Oriental, Siquijor
-- ONI as the only climate predictor
+- RONI as the only climate predictor (ONI used only for the Part 1 comparison)
 - Climatology baseline and linear model
 - Forecast for February–May 2027
 

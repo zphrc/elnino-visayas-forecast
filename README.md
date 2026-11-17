@@ -1,6 +1,6 @@
 # El Niño Rainfall Impact Forecast: Central Visayas 2027
 
-> 🚧 **Work in progress.** Started October 2026; target completion November 30, 2026.
+> **Work in progress.**
 
 How much below-normal rainfall should each Central Visayas province expect in February–May 2027, given the strength of the current El Niño?
 
@@ -10,7 +10,7 @@ PAGASA declared El Niño conditions in June 2026, and models suggest the event w
 
 The project is built in four parts, each with its own finished result.
 
-- [ ] **Part 1: How strong is this El Niño?** Load the Oceanic Niño Index (ONI) and compare the 2026 event with past ones.
+- [ ] **Part 1: How strong is this El Niño?** Identify past El Niño and La Niña events using NOAA's Relative Oceanic Niño Index (RONI), compare the 2026 event with past ones, and compare results with the older Oceanic Niño Index (ONI).
 - [ ] **Part 2: What did past El Niños do to rainfall?** Compare rainfall in El Niño years with normal years, by province.
 - [ ] **Part 3: Can we forecast it?** Build a baseline and a regression model, evaluated on held-out El Niño events.
 - [ ] **Part 4: The 2027 forecast.** Forecast February–May 2027 rainfall anomalies with uncertainty ranges.
@@ -22,10 +22,13 @@ All data sources are free and public.
 
 | Dataset | Source | Used for |
 | --- | --- | --- |
-| Oceanic Niño Index (ONI) | NOAA Climate Prediction Center | El Niño strength |
+| Relative Oceanic Niño Index (RONI) | NOAA Climate Prediction Center | El Niño strength (main index) |
+| Oceanic Niño Index (ONI) | NOAA Climate Prediction Center | Comparison with RONI in Part 1 |
 | CHIRPS v2 monthly rainfall | UC Santa Barbara Climate Hazards Center | Rainfall by province |
 | Province boundaries | PSA / HDX | Averaging rainfall per province |
 | GSOD / GHCN-Daily station data | NOAA | Optional cross-check of CHIRPS |
+
+RONI has been NOAA's official index for monitoring El Niño and La Niña since February 2026. It measures Niño 3.4 temperatures relative to the tropical average, which removes the effect of overall ocean warming. See [decision 3](docs/decisions.md#3-use-roni-as-the-primary-enso-index).
 
 Raw data is not stored in this repository. The pipeline downloads it into `data/`.
 
@@ -56,9 +59,10 @@ Pipeline commands will be added as each part is completed.
 
 ## Tools
 
-Python, pandas, DuckDB, pytest, Ruff, uv.
+Python 3.12, pandas, DuckDB, pytest, Ruff, uv.
 
 ## Documentation
 
 - [Project proposal](docs/proposal.md): research question, approach, success criteria, and scope
 - [Decision log](docs/decisions.md): what changed and why
+- [Roadmap](docs/roadmap.md): step-by-step checklist for each part
