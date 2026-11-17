@@ -17,11 +17,11 @@ A step-by-step checklist for the project, based on [the proposal](proposal.md). 
 ### Events
 - [x] Summarize runs into a `runs` table (start, end, months, label)
 - [x] Filter to real events: El Niño or La Niña lasting 5+ months
-- [ ] Check: 1997–98, 2015–16, and 2023–24 El Niños all appear in `events` 💾
-- [ ] Add **peak ONI** to each run. For El Niño the peak is the highest value; for La Niña, the lowest.
+- [x] Check: 1997–98, 2015–16, and 2023–24 El Niños all appear in `events` 💾
+- [x] Add **peak ONI** to each run. For El Niño the peak is the highest value; for La Niña, the lowest.
   - *Done when:* 1997–98 and 2015–16 both peak around +2.4 to +2.6
   - *Search:* pandas named aggregation with max and min; selecting a value based on another column
-- [ ] Add a **strength** column: weak (0.5–0.9), moderate (1.0–1.4), strong (1.5–1.9), very strong (≥2.0), using the absolute peak
+- [X] Add a **strength** column: weak (0.5–0.9), moderate (1.0–1.4), strong (1.5–1.9), very strong (≥2.0), using the absolute peak
   - *Search:* `np.select`; `abs()`
 - [ ] Find the **2026 event**. It's still ongoing, so its end date is just the latest month in the data. Note that in your write-up.
   - *Done when:* you can say how long it has lasted so far and its peak so far 💾
